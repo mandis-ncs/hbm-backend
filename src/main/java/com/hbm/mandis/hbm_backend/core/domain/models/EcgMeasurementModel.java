@@ -1,9 +1,10 @@
 package com.hbm.mandis.hbm_backend.core.domain.models;
 
 import java.time.Instant;
+import java.util.UUID;
 
 public class EcgMeasurementModel {
-    private String id;
+    private UUID id;
     private double value;
     private Instant timestamp;
     private String deviceId;
@@ -21,7 +22,7 @@ public class EcgMeasurementModel {
         return new Builder();
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -42,7 +43,7 @@ public class EcgMeasurementModel {
     }
 
     public static final class Builder {
-        private String id;
+        private UUID id;
         private double value;
         private Instant timestamp;
         private String deviceId;
@@ -51,7 +52,7 @@ public class EcgMeasurementModel {
         public Builder() {
         }
 
-        public Builder id(String id) {
+        public Builder id(UUID id) {
             this.id = id;
             return this;
         }
