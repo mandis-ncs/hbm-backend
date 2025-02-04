@@ -183,7 +183,7 @@ void shouldSaveNormalMeasurement() {
 ---
 
 ## 🎯 Contributors
-👤 **Your Name** | **your.email@example.com** | [GitHub](https://github.com/yourusername)
+👤 **Amanda Castro** | [Portfolio](https://mandis.framer.website/)
 
 ---
 
