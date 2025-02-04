@@ -14,12 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class SaveMeasurementUsecase implements SaveMeasurementInputPort {
-    // Definir baseline e limiar para detectar anomalias
+
     final double BASELINE_MIN = 0.8;
     final double BASELINE_MAX = 1.2;
-    final double ANOMALY_THRESHOLD = 0.2; // 20% da baseline
-    final double ANOMALY_MIN = BASELINE_MIN * (1 + ANOMALY_THRESHOLD);
-    final double ANOMALY_MAX = BASELINE_MAX * (1 + ANOMALY_THRESHOLD);
+    final double ANOMALY_THRESHOLD = 0.2;
 
     private static final Logger logger = LoggerFactory.getLogger(SaveMeasurementUsecase.class);
 
@@ -35,11 +33,9 @@ public class SaveMeasurementUsecase implements SaveMeasurementInputPort {
     @Override
     public EcgMeasurementModel save(EcgMeasurementModel ecgMeasurementModel) {
 
-        // 1️⃣ Verificar se a medição é uma anomalia
         boolean isAnomaly = isAnomalous(ecgMeasurementModel.getValue(), BASELINE_MIN, BASELINE_MAX, ANOMALY_THRESHOLD);
         ecgMeasurementModel = ecgMeasurementModel.builder().anomaly(isAnomaly).build();
 
-        // 2️⃣ Buscar histórico de medições
         List<EcgMeasurementModel> last60Measurements = measurementPersistenceOutputPort
                 .getLast60Measurements(ecgMeasurementModel.getDeviceId());
 
@@ -50,7 +46,6 @@ public class SaveMeasurementUsecase implements SaveMeasurementInputPort {
 
         long anomalyCount = countAnomalies(last60Measurements);
 
-        // 3️⃣ Processar regras de irregularidade
         Optional<IrregularityType> irregularityType = processIrregularity(ecgMeasurementModel, anomalyCount);
 
         if (isAnomaly && irregularityType.isPresent()) {
@@ -60,7 +55,6 @@ public class SaveMeasurementUsecase implements SaveMeasurementInputPort {
         }
 
         try {
-            // 4️⃣ Salvar a medição no banco
             logger.info("Saving Measurement: {}mV (Anomaly: {})", ecgMeasurementModel.getValue(), isAnomaly);
             return measurementPersistenceOutputPort.save(ecgMeasurementModel);
 
@@ -69,34 +63,23 @@ public class SaveMeasurementUsecase implements SaveMeasurementInputPort {
         }
     }
 
-    /**
-     * Verifica se um valor de ECG está fora do limite de normalidade (anomalia).
-     */
     private boolean isAnomalous(double value, double baselineMin, double baselineMax, double anomalyThreshold) {
         return value < (baselineMin * (1 - anomalyThreshold)) || value > (baselineMax * (1 + anomalyThreshold));
     }
 
-    /**
-     * Conta quantas anomalias existem dentro das últimas 60 medições.
-     */
     private long countAnomalies(List<EcgMeasurementModel> measurements) {
         return measurements.stream().filter(EcgMeasurementModel::isAnomaly).count();
     }
 
-    /**
-     * Processa a irregularidade com base no histórico e cria eventos quando necessário.
-     */
     private Optional<IrregularityType> processIrregularity(EcgMeasurementModel measurement, long anomalyCount) {
         String deviceId = measurement.getDeviceId();
 
-        // Se houver pelo menos 5 anomalias em 60 medições, gerar um "bip"
         if (anomalyCount >= 5) {
             logger.warn("Detectadas {} anomalias nas últimas 60 medições. Criando evento BIP.", anomalyCount);
             createIrregularityEvent(deviceId, measurement, IrregularityType.BIP);
             return Optional.of(IrregularityType.BIP);
         }
 
-        // Se houver 60 medições normais após um evento, gerar um "bipbip"
         Optional<IrregularityEventModel> lastEvent = eventPersistenceOutputPort.getLastEvent(deviceId);
         if (lastEvent.isPresent() && anomalyCount == 0) {
             logger.info("60 medições normais após uma irregularidade. Criando evento BIPBIP.");
@@ -107,9 +90,6 @@ public class SaveMeasurementUsecase implements SaveMeasurementInputPort {
         return Optional.empty();
     }
 
-    /**
-     * Cria um evento de irregularidade no banco de dados.
-     */
     private void createIrregularityEvent(String deviceId, EcgMeasurementModel measurement, IrregularityType type) {
         IrregularityEventModel event = IrregularityEventModel.builder()
                 .deviceId(deviceId)
@@ -120,9 +100,6 @@ public class SaveMeasurementUsecase implements SaveMeasurementInputPort {
         eventPersistenceOutputPort.save(event);
     }
 
-    /**
-     * Fecha um evento de irregularidade registrando um timestamp de término.
-     */
     private void closeIrregularityEvent(IrregularityEventModel event, EcgMeasurementModel measurement) {
         IrregularityEventModel updatedEvent = event.builder()
                 .endTimestamp(measurement.getTimestamp())
