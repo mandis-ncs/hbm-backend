@@ -9,7 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class MeasurementPersistenceAdapter implements MeasurementPersistenceOutputPort {
@@ -32,5 +34,16 @@ public class MeasurementPersistenceAdapter implements MeasurementPersistenceOutp
         List<EcgMeasurementEntity> entities = ecgMeasurementEntityRepository
                 .findTop60ByDeviceIdOrderByTimestampDesc(deviceId, pageable);
         return entities.stream().map(MeasurementMapper::entityToModel).toList();
+    }
+
+    @Override
+    public List<EcgMeasurementModel> getLast30DaysMeasurements(String deviceId, Instant thirtyDaysAgo) {
+        List<EcgMeasurementEntity> entities = ecgMeasurementEntityRepository.findMeasurementsByDeviceIdAndLast30Days(deviceId, thirtyDaysAgo);
+        return entities.stream().map(MeasurementMapper::entityToModel).toList();
+    }
+
+    @Override
+    public void deleteByTimestampBefore(Instant thirtyDaysAgo) {
+        ecgMeasurementEntityRepository.deleteByTimestampBefore(thirtyDaysAgo);
     }
 }

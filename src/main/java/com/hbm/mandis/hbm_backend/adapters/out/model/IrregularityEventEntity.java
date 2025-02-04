@@ -23,5 +23,5 @@ public class IrregularityEventEntity {
     private Instant startTimestamp;
     private Instant endTimestamp;
     @DBRef
-    private EcgMeasurementModel ecgMeasurementModel;
+    private EcgMeasurementEntity ecgMeasurementEntity;
 }

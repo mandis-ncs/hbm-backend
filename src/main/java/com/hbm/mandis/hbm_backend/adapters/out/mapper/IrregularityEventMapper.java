@@ -11,6 +11,7 @@ public class IrregularityEventMapper {
                     .deviceId(model.getDeviceId())
                     .startTimestamp(model.getStartTimestamp())
                     .endTimestamp(model.getEndTimestamp())
+                    .ecgMeasurementEntity(MeasurementMapper.modelToEntity(model.getEcgMeasurementModel()))
                     .build();
         }
         return null;
@@ -23,6 +24,7 @@ public class IrregularityEventMapper {
                     .deviceId(entity.getDeviceId())
                     .startTimestamp(entity.getStartTimestamp())
                     .endTimestamp(entity.getEndTimestamp())
+                    .ecgMeasurementModel(MeasurementMapper.entityToModel(entity.getEcgMeasurementEntity()))
                     .build();
         }
         return null;

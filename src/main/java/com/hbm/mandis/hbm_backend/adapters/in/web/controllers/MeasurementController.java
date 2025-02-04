@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/measurement")
+@RequestMapping("/api/measurements")
 public class MeasurementController {
 
     private final SaveMeasurementInputPort saveMeasurementInputPort;
@@ -26,15 +26,15 @@ public class MeasurementController {
     }
 
     //TODO apply swagger
-    //TODO mandar para o Websocket para aparecer no frontend?
+    //TODO Connect with frontend
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> receiveMeasurement(@RequestBody EcgMeasurementRequest measurementDto) {
         saveMeasurementInputPort.save(MeasurementMapper.requestToModel(measurementDto));
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/history", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/history/{deviceId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EcgMeasurementModel>> getLast30DaysMeasurements(@PathVariable String deviceId) {
-        return ResponseEntity.ok().body(getHistoryInputPort.getAll(UUID.fromString(deviceId)));
+        return ResponseEntity.ok().body(getHistoryInputPort.getAll(deviceId));
     }
 }

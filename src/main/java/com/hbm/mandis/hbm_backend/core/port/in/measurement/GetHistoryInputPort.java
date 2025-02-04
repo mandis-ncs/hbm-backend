@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface GetHistoryInputPort {
-    List<EcgMeasurementModel> getAll(UUID deviceId);
+    List<EcgMeasurementModel> getAll(String deviceId);
 }

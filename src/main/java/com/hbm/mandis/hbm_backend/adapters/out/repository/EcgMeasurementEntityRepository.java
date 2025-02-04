@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,5 +17,10 @@ public interface EcgMeasurementEntityRepository extends MongoRepository<EcgMeasu
 //            fields = "{ '_id': 0, 'value': 1, 'timestamp': 1, 'deviceId': 1, 'anomaly': 1, 'irregularityType': 1 }")
     List<EcgMeasurementEntity> findTop60ByDeviceIdOrderByTimestampDesc(String deviceId, Pageable pageable);
 
+    @Query(value = "{ 'deviceId' : ?0, 'timestamp' : { $gte: ?1 } }", sort = "{ 'timestamp' : -1 }")
+    List<EcgMeasurementEntity> findMeasurementsByDeviceIdAndLast30Days(String deviceId, Instant thirtyDaysAgo);
+
+    @Query(value = "{ 'timestamp' : { $lt: ?0 } }", delete = true)
+    void deleteByTimestampBefore(Instant threshold);
 }
 
