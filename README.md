@@ -59,13 +59,11 @@ This backend interacts with an **ECG measurement generator** and **WebSocket cli
  │   ├── 📁 test  # Unit tests (JUnit + Mockito)
 ```
 
-## 📁 Dependencies
+## 🎯 Dependencies
 
-This backend interacts with the following external components:
-
-- Frontend Dashboard: Displays real-time ECG measurements. Repository link: Frontend ECG Dashboard
-
-- Heartbeat Generator API: Simulates ECG measurements and sends them via WebSocket. Repository link: Heartbeat Generator
+This project depends on:
+- **[HBM Backend API](https://github.com/mandis-ncs/hbm-backend)** (Processes ECG data and detects anomalies)
+- **[WebSocket Clients](https://github.com/mandis-ncs/hbm-frontend)** (e.g., a monitoring dashboard frontend)
 
 ## 📡 API Endpoints
 
