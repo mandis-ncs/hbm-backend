@@ -1,6 +1,7 @@
 package com.hbm.mandis.hbm_backend.adapters.out.mapper;
 
-import com.hbm.mandis.hbm_backend.adapters.in.web.controllers.EcgMeasurementRequest;
+import com.hbm.mandis.hbm_backend.adapters.in.web.controllers.dto.EcgMeasurementRequest;
+import com.hbm.mandis.hbm_backend.adapters.in.web.controllers.dto.EcgMeasurementResponse;
 import com.hbm.mandis.hbm_backend.adapters.out.model.EcgMeasurementEntity;
 import com.hbm.mandis.hbm_backend.core.domain.models.EcgMeasurementModel;
 
@@ -21,6 +22,7 @@ public class MeasurementMapper {
                     .deviceId(model.getDeviceId())
                     .timestamp(model.getTimestamp())
                     .anomaly(model.isAnomaly())
+                    .irregularityType(model.getIrregularityType())
                     .build();
         }
         return null;
@@ -34,7 +36,18 @@ public class MeasurementMapper {
                     .deviceId(entity.getDeviceId())
                     .timestamp(entity.getTimestamp())
                     .anomaly(entity.isAnomaly())
+                    .irregularityType(entity.getIrregularityType())
                     .build();
+        }
+        return null;
+    }
+
+    public static EcgMeasurementResponse modelToResponse(EcgMeasurementModel model) {
+        if (model != null) {
+            return new EcgMeasurementResponse(model.getValue(),
+                    model.getDeviceId(),
+                    model.isAnomaly(),
+                    model.getIrregularityType());
         }
         return null;
     }

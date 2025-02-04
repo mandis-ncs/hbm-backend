@@ -8,12 +8,14 @@ public class IrregularityEventModel {
     private String deviceId;
     private Instant startTimestamp;
     private Instant endTimestamp;
+    private EcgMeasurementModel ecgMeasurementModel;
 
     private IrregularityEventModel(Builder builder) {
         this.id = builder.id;
         this.deviceId = builder.deviceId;
         this.startTimestamp = builder.startTimestamp;
         this.endTimestamp = builder.endTimestamp;
+        this.ecgMeasurementModel = builder.ecgMeasurementModel;
     }
 
     public static Builder builder() {
@@ -36,11 +38,14 @@ public class IrregularityEventModel {
         return endTimestamp;
     }
 
+    public EcgMeasurementModel getEcgMeasurementModel() { return ecgMeasurementModel; }
+
     public static final class Builder {
         private UUID id;
         private String deviceId;
         private Instant startTimestamp;
         private Instant endTimestamp;
+        private EcgMeasurementModel ecgMeasurementModel;
 
         public Builder() {
         }
@@ -62,6 +67,11 @@ public class IrregularityEventModel {
 
         public Builder endTimestamp(Instant endTimestamp) {
             this.endTimestamp = endTimestamp;
+            return this;
+        }
+
+        public Builder ecgMeasurementModel(EcgMeasurementModel ecgMeasurementModel) {
+            this.ecgMeasurementModel = ecgMeasurementModel;
             return this;
         }
 

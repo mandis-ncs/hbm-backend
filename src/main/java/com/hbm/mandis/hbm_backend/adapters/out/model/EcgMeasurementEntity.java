@@ -1,5 +1,6 @@
 package com.hbm.mandis.hbm_backend.adapters.out.model;
 
+import com.hbm.mandis.hbm_backend.core.domain.models.IrregularityType;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,4 +22,5 @@ public class EcgMeasurementEntity {
     private Instant timestamp;
     private String deviceId;
     private boolean anomaly;
+    private IrregularityType irregularityType;
 }

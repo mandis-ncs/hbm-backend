@@ -1,4 +1,4 @@
-package com.hbm.mandis.hbm_backend.adapters.in.web.controllers;
+package com.hbm.mandis.hbm_backend.adapters.in.web.controllers.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;

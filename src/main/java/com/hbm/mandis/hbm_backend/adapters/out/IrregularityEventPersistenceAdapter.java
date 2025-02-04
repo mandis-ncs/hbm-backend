@@ -6,6 +6,8 @@ import com.hbm.mandis.hbm_backend.core.domain.models.IrregularityEventModel;
 import com.hbm.mandis.hbm_backend.core.port.out.persistence.IrregularityEventPersistenceOutputPort;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class IrregularityEventPersistenceAdapter implements IrregularityEventPersistenceOutputPort {
 
@@ -18,5 +20,11 @@ public class IrregularityEventPersistenceAdapter implements IrregularityEventPer
     @Override
     public void save(IrregularityEventModel eventModel) {
         eventEntityRepository.save(IrregularityEventMapper.modelToEntity(eventModel));
+    }
+
+    @Override
+    public Optional<IrregularityEventModel> getLastEvent(String deviceId) {
+        return eventEntityRepository.findFirstByDeviceIdOrderByStartTimestampDesc(deviceId)
+                .map(IrregularityEventMapper::entityToModel);
     }
 }

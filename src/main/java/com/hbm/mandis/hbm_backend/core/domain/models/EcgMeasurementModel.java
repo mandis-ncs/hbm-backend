@@ -9,6 +9,7 @@ public class EcgMeasurementModel {
     private Instant timestamp;
     private String deviceId;
     private boolean anomaly;
+    private IrregularityType irregularityType;
 
     private EcgMeasurementModel(Builder builder) {
         this.id = builder.id;
@@ -42,12 +43,17 @@ public class EcgMeasurementModel {
         return anomaly;
     }
 
+    public IrregularityType getIrregularityType() {
+        return irregularityType;
+    }
+
     public static final class Builder {
         private UUID id;
         private double value;
         private Instant timestamp;
         private String deviceId;
         private boolean anomaly;
+        private IrregularityType irregularityType;
 
         public Builder() {
         }
@@ -74,6 +80,11 @@ public class EcgMeasurementModel {
 
         public Builder anomaly(boolean anomaly) {
             this.anomaly = anomaly;
+            return this;
+        }
+
+        public Builder irregularityType(IrregularityType irregularityType) {
+            this.irregularityType = irregularityType;
             return this;
         }
 

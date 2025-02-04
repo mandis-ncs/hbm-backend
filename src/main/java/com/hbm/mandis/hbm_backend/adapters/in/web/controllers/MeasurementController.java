@@ -1,5 +1,6 @@
 package com.hbm.mandis.hbm_backend.adapters.in.web.controllers;
 
+import com.hbm.mandis.hbm_backend.adapters.in.web.controllers.dto.EcgMeasurementRequest;
 import com.hbm.mandis.hbm_backend.adapters.out.mapper.MeasurementMapper;
 import com.hbm.mandis.hbm_backend.core.domain.models.EcgMeasurementModel;
 import com.hbm.mandis.hbm_backend.core.port.in.measurement.GetHistoryInputPort;
