@@ -62,7 +62,7 @@ This backend interacts with an **ECG measurement generator** and **WebSocket cli
 ## 🎯 Dependencies
 
 This project depends on:
-- **[HBM Backend API](https://github.com/mandis-ncs/hbm-backend)** (Processes ECG data and detects anomalies)
+- **[HBM Simulator](https://github.com/mandis-ncs/heart-beat-generator)** (Simulates ECG data)
 - **[WebSocket Clients](https://github.com/mandis-ncs/hbm-frontend)** (e.g., a monitoring dashboard frontend)
 
 ## 📡 API Endpoints
